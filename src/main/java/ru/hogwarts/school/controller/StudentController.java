@@ -33,8 +33,8 @@ public class StudentController {
     }
 
     @PutMapping
-    public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
-        Student foundStudent = studentService.editStudent(id, student);
+    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
+        Student foundStudent = studentService.editStudent(student);
         if (foundStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -46,13 +46,9 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping
-    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
-        if (age > 0) {
-            return ResponseEntity.ok(studentService.findByAge(age));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
+    @GetMapping("/age/{age}")
+    public ResponseEntity<Collection<Student>> findStudents(@PathVariable Integer age) {
+        return ResponseEntity.ok(studentService.findByAge(age));
     }
-
 
 }
