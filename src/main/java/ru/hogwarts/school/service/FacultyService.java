@@ -1,22 +1,22 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepositories;
+import ru.hogwarts.school.repositories.StudentRepositories;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
     private final FacultyRepositories facultyRepositories;
+    private final StudentRepositories studentRepositories;
 
-    public FacultyService(FacultyRepositories facultyRepositories) {
+    public FacultyService(FacultyRepositories facultyRepositories, StudentRepositories studentRepositories) {
         this.facultyRepositories = facultyRepositories;
+        this.studentRepositories = studentRepositories;
+
     }
 
     public Faculty addFaculty(Faculty faculty) {
@@ -35,8 +35,16 @@ public class FacultyService {
         facultyRepositories.deleteById(id);
     }
 
+    public Collection<Faculty> findFacultyByColorOrName(String name, String color) {
+        return facultyRepositories.findFacultyByColorIgnoreCaseOrNameIgnoreCase(color, name);
+    }
 
-    public Collection<Faculty> findByColor(String color) {
-        return facultyRepositories.findByColor(color);
+
+    public Collection<Student> getFacultyStudents(long id) {
+        Faculty faculty = findFaculty(id);
+        if (faculty == null) {
+            return null;
+        }
+        return studentRepositories.findByFacultyId(faculty.getId());
     }
 }
