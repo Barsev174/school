@@ -7,7 +7,7 @@ where age >20 AND age <30;
 SELECT student.name
 FROM student;
 /*Получить всех студентов, у которых в имени присутствует буква «О» (или любая другая).*/
-SELECT *
+SELECT*
 FROM student
 WHERE name LIKE '%o%';
 /*Получить всех студентов, у которых возраст меньше идентификатора.*/
