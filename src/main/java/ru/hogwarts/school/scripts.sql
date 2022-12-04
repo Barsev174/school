@@ -2,7 +2,7 @@ select * from student;
 /*Получить всех студентов, возраст которых находится между 10 и 20 (можно подставить любые числа, главное, чтобы нижняя граница была меньше верхней).*/
 select *
 FROM student
-where age >20 AND age <30;
+where age between 20 AND 30;
 /*Получить всех студентов, но отобразить только список их имен.*/
 SELECT student.name
 FROM student;
@@ -17,4 +17,4 @@ WHERE age<student.id;
 /*Получить всех студентов упорядоченных по возрасту.*/
 SELECT *
 FROM student
-ORDER BY 2;
+ORDER BY age;

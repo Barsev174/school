@@ -39,7 +39,7 @@ public class FacultyController {
     public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
         Faculty foundFaculty = facultyService.editFaculty(faculty);
         if (foundFaculty == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(foundFaculty);
     }
@@ -52,13 +52,12 @@ public class FacultyController {
 
 
     @GetMapping("nameOrColor")
-    public ResponseEntity<Collection<Faculty>> findFacultiesNaeOrColor(@RequestParam(required = false) String name,
-                                                                       @RequestParam(required = false) String color) {
+    public ResponseEntity<Collection<Faculty>> findFacultiesNaeOrColor(@RequestParam String nameOrColor ) {
 
-            return ResponseEntity.ok(facultyService.findFacultyByColorOrName(name, color));
+            return ResponseEntity.ok(facultyService.findFacultyByColorOrName(nameOrColor));
     }
 
-    @GetMapping("/students/{id}")
+    @GetMapping("/{id}/students")
     public ResponseEntity<Collection<Student>> getFacultyStudents(@PathVariable Long id) {
         return ResponseEntity.ok(facultyService.getFacultyStudents(id));
     }

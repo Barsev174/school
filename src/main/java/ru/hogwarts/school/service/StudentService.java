@@ -24,10 +24,13 @@ public class StudentService {
     }
 
     public Student findStudent(long id) {
-        return studentRepositories.findById(id).get();
+        return studentRepositories.findById(id).orElse(null);
     }
 
     public Student editStudent(Student student) {
+        if (studentRepositories.findById(student.getId()).orElse(null) == null) {
+            return null;
+        }
         return studentRepositories.save(student);
     }
 
@@ -40,10 +43,6 @@ public class StudentService {
     }
 
     public Collection<Student> findByAgeBetween(int ageMin, int ageMax) {
-        return studentRepositories.findByAgeBetween(ageMin, ageMax);
-    }
-
-    public Collection<Student> findStudentByAge(int ageMin, int ageMax) {
         return studentRepositories.findByAgeBetween(ageMin, ageMax);
     }
 
