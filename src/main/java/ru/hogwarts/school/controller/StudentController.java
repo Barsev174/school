@@ -60,6 +60,4 @@ public class StudentController {
     public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudentFaculty(id));
     }
-
-
 }
