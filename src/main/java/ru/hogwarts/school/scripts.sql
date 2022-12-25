@@ -18,3 +18,4 @@ WHERE age<student.id;
 SELECT *
 FROM student
 ORDER BY age;
+
