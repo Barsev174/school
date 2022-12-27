@@ -1,5 +1,7 @@
 package ru.hogwarts.school.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import java.util.Collection;
 
 public class AvatarController {
     private final AvatarService avatarService;
+    private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     public AvatarController(AvatarService avatarService) {
         this.avatarService = avatarService;
@@ -30,6 +33,7 @@ public class AvatarController {
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
+        logger.debug("Calling method uploadAvatar (id = {})", id);
         if (avatar.getSize() > 1024 * 300) {
             return ResponseEntity.badRequest().body("File is big");
         }
@@ -39,6 +43,7 @@ public class AvatarController {
 
     @GetMapping(value = "/{id}/avatar/preview")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
+        logger.debug("Calling method downloadAvatar (id = {})", id);
         Avatar avatar = avatarService.findAvatar(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
@@ -49,9 +54,9 @@ public class AvatarController {
                 .body(avatar.getData());
     }
 
-
     @GetMapping(value = "/{id}/avatar")
-    public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        logger.debug("Calling method downloadAvatar (id = {})", id);
         Avatar avatar = avatarService.findAvatar(id);
         Path path = Path.of(avatar.getFilePath());
         try (InputStream is = Files.newInputStream(path);
