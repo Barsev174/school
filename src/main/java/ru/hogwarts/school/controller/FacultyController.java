@@ -7,11 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
-import java.util.Collections;
 
 
 @RestController
@@ -58,7 +56,7 @@ public class FacultyController {
     }
 
     @GetMapping("nameOrColor")
-    public ResponseEntity<Collection<Faculty>> findFacultiesNaeOrColor(@RequestParam String nameOrColor) {
+    public ResponseEntity<Collection<Faculty>> findFacultiesNameOrColor(@RequestParam String nameOrColor) {
         logger.debug("Calling method findFacultiesNaeOrColor (nameOrColor = {})", nameOrColor);
         return ResponseEntity.ok(facultyService.findFacultyByColorOrName(nameOrColor));
     }
@@ -67,6 +65,11 @@ public class FacultyController {
     public ResponseEntity<Collection<Student>> getFacultyStudents(@PathVariable Long id) {
         logger.debug("Calling method getFacultyStudents (id = {})", id);
         return ResponseEntity.ok(facultyService.getFacultyStudents(id));
+    }
+    @GetMapping("/getfacultynamewithmaxlength")
+    public ResponseEntity<ResponseEntity<String>> getFacultyNameWithMaxLength() {
+        logger.debug("Calling method getFacultyNameWithMaxLength");
+        return ResponseEntity.ok(facultyService.getFacultyNameWithMaxLength());
     }
 
 }

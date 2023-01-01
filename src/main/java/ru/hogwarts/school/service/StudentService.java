@@ -1,7 +1,10 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.controller.StudentController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepositories;
@@ -15,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
     private final StudentRepositories studentRepositories;
+    private final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     public StudentService(StudentRepositories studentRepositories) {
         this.studentRepositories = studentRepositories;
@@ -47,7 +51,7 @@ public class StudentService {
         return studentRepositories.findByAgeBetween(ageMin, ageMax);
     }
 
-    public Faculty  getStudentFaculty(long id) {
+    public Faculty getStudentFaculty(long id) {
         Student student = findStudent(id);
         if (student == null) {
             return null;
@@ -65,5 +69,22 @@ public class StudentService {
 
     public List<Student> getLastStudentsById() {
         return studentRepositories.getLastFiveStudent();
+    }
+    public Collection<String> getFilteredByName() {
+        return studentRepositories.findAll().stream()
+                //        .parallel()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(s -> s.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public Double getAllStudentsAvgAge() {
+        return studentRepositories.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0);
     }
 }

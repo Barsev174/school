@@ -25,7 +25,7 @@ import java.util.Collection;
 
 public class AvatarController {
     private final AvatarService avatarService;
-    private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
+    private final Logger logger = LoggerFactory.getLogger(AvatarController.class);
 
     public AvatarController(AvatarService avatarService) {
         this.avatarService = avatarService;
