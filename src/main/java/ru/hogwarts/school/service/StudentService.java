@@ -87,4 +87,55 @@ public class StudentService {
                 .average()
                 .orElse(0);
     }
+
+    public void getAllStudentName() {
+        List<String> names = studentRepositories.findAll().stream()
+                .map(user -> user.getName())
+                .collect(Collectors.toList());
+
+        printName(names.get(0));
+        printName(names.get(1));
+
+        new Thread(() -> {
+            printName(names.get(2));
+            printName(names.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printName(names.get(4));
+            printName(names.get(5));
+        }).start();
+
+    }
+
+    public void getAllStudentNameSync() {
+        List<String> names = studentRepositories.findAll().stream()
+                .map(user -> user.getName())
+                .collect(Collectors.toList());
+
+        printNameSync(names.get(0));
+        printNameSync(names.get(1));
+
+        new Thread(() -> {
+            printNameSync(names.get(2));
+            printNameSync(names.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printNameSync(names.get(4));
+            printNameSync(names.get(5));
+        }).start();
+    }
+
+    private void printName(String str) {
+        System.out.println(str);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private synchronized void printNameSync(String str) {
+        System.out.println(str);
+    }
 }

@@ -55,17 +55,19 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/age")
-    public ResponseEntity<Collection<Student>>findStudents(@RequestParam Integer age) {
+    public ResponseEntity<Collection<Student>> findStudents(@RequestParam Integer age) {
         logger.debug("Calling method findStudents (age = {})", age);
         return ResponseEntity.ok(studentService.findByAge(age));
     }
 
     @GetMapping("/age/between")
-    public ResponseEntity<Collection<Student>>  findStudentByAge(@RequestParam Integer  ageMin, @RequestParam Integer ageMax) {
+    public ResponseEntity<Collection<Student>> findStudentByAge(@RequestParam Integer ageMin, @RequestParam Integer ageMax) {
         logger.debug("Calling method findStudentByAge (minAge = {}, maxAge = {})", ageMin, ageMax);
         return ResponseEntity.ok(studentService.findByAgeBetween(ageMin, ageMax));
     }
+
     @GetMapping("/{id}/faculty")
     public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Long id) {
         logger.debug("Calling method getStudentFaculty (id = {})", id);
@@ -104,5 +106,15 @@ public class StudentController {
     public Double getAllStudentsAvgAgeWithStream() {
         logger.debug("Calling method getAllStudentsAvgAgeWithStream");
         return studentService.getAllStudentsAvgAge();
+    }
+
+    @GetMapping("/all-students")
+    public void getAllStudentName () {
+        studentService.getAllStudentName();
+    }
+
+    @GetMapping("/all-students-sync")
+    public void getAllStudentNameSync () {
+        studentService.getAllStudentNameSync();
     }
 }
