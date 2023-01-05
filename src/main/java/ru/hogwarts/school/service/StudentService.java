@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class StudentService {
     private final StudentRepositories studentRepositories;
     private final Logger logger = LoggerFactory.getLogger(StudentController.class);
+    private int counterForSync = 0;
 
     public StudentService(StudentRepositories studentRepositories) {
         this.studentRepositories = studentRepositories;
@@ -113,17 +114,17 @@ public class StudentService {
                 .map(user -> user.getName())
                 .collect(Collectors.toList());
 
-        printNameSync(names.get(0));
-        printNameSync(names.get(1));
+        printNameSync(names);
+        printNameSync(names);
 
         new Thread(() -> {
-            printNameSync(names.get(2));
-            printNameSync(names.get(3));
+            printNameSync(names);
+            printNameSync(names);
         }).start();
 
         new Thread(() -> {
-            printNameSync(names.get(4));
-            printNameSync(names.get(5));
+            printNameSync(names);
+            printNameSync(names);
         }).start();
     }
 
@@ -135,7 +136,8 @@ public class StudentService {
             throw new RuntimeException(e);
         }
     }
-    private synchronized void printNameSync(String str) {
-        System.out.println(str);
+    private synchronized void printNameSync(List<String> names) {
+        System.out.println(names.get(counterForSync));
+        counterForSync++;
     }
 }
